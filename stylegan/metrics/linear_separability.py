@@ -139,18 +139,15 @@ class LS(metric_base.MetricBase):
                     result_dict[attrib_idx] = predictions
                 result_expr.append(result_dict)
 
-        print(result_expr)
 
         # Sampling loop.
         results = []
         for _ in range(0, self.num_samples, minibatch_size):
             results += tflib.run(result_expr)
         results = {key: np.concatenate([value[key] for value in results], axis=0) for key in results[0].keys()}
-        print(results.keys())
 
         np.save('results/stylegan-dlatents.npy', results['dlatents'])
-        for key in results.keys():
-            np.save('results/{}_score.npy'.format(key), results[key][:, 0].reshape((-1,1)))
+        np.save('results/8_score.npy', results[8][:, 0].reshape((-1,1)))
 
 #       # Calculate conditional entropy for each attribute.
 #         conditional_entropies = defaultdict(list)
